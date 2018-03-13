@@ -1,17 +1,10 @@
 package test.checkout;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import test.AbstractTest;
 import test.domain.CheckOut;
-import test.domain.Item;
-import test.domain.Store;
 import test.exception.AddingUnavailableItemException;
 
 /**

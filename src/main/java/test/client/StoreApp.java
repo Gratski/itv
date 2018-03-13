@@ -29,13 +29,13 @@ public class StoreApp {
 		Store store = new Store(stockFileName);
 		CheckOut checkout = store.createCheckout();
 		
+		Scanner scanner = new Scanner(System.in);
 		boolean shopping = true;
 		while(shopping) {
 			
 			store.printStockItems();
 			
 			System.out.print("Select an article by its ID or return to checkout: ");
-			Scanner scanner = new Scanner(System.in);
 			String selectedItem = scanner.nextLine();
 			
 			// check if is to checkout
@@ -61,6 +61,7 @@ public class StoreApp {
 			
 		}
 		
+		scanner.close();
 		System.out.println("Your total is: " + checkout.calculateTotal());
 		
 	}

@@ -2,11 +2,8 @@ package test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
-
-import test.domain.CheckOut;
 import test.domain.Item;
 import test.domain.Store;
 

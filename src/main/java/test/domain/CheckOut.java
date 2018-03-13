@@ -32,7 +32,6 @@ public class CheckOut {
 	 */
 	public void addItem(Item item) {
 		
-		// check if the store still has this product available
 		if(!store.isItemAvailable(item)) {
 			throw new AddingUnavailableItemException("Item ID: " + item.getId() + " is not available");
 		}

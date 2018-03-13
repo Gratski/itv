@@ -16,17 +16,12 @@ import test.catalogs.DiscountsCatalog;
 
 /**
  * This class represent the stock of the store
- * 
- * @author JoaoRodrigues
- *
  */
 public class Store {
 
 	/**
 	 * All the items available in this store
-	 * 
 	 * The Key is the unique identifier of this item in this store context
-	 * 
 	 * The Value is the Stock Item itself
 	 */
 	private Map<Long, StockItem> stockItems;
@@ -38,54 +33,6 @@ public class Store {
 
 	public Store(String stockFileName) throws FileNotFoundException, IOException, ParseException {
 		init(stockFileName);
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void init(String stockFileName) throws FileNotFoundException, IOException, ParseException {
-
-		// fetch items list
-		stockItems = new HashMap<Long, StockItem>();
-
-		// initialize discounts catalog
-		discountsCatalog = new DiscountsCatalog();
-
-		JSONParser jsonParser = new JSONParser();
-		Object obj = jsonParser.parse(new FileReader(stockFileName));
-
-		JSONObject json = (JSONObject) obj;
-		JSONArray array = (JSONArray) json.get("stock");
-
-		Iterator<JSONObject> iterator = array.iterator();
-		while (iterator.hasNext()) {
-			JSONObject cur = iterator.next();
-
-			// stock quantity
-			Long stockQty = (Long) cur.get("qty");
-
-			// item
-			JSONObject curItem = (JSONObject) cur.get("item");
-			Item item = new Item();
-			item.setId((Long) curItem.get("id"));
-			item.setDesignation((String) curItem.get("designation"));
-			item.setPrice((Double) curItem.get("price"));
-
-			StockItem stockItem = new StockItem();
-			stockItem.setItem(item);
-			stockItem.setQty(stockQty);
-
-			stockItems.put(item.getId(), stockItem);
-
-			// item discount
-			JSONObject curDiscount = (JSONObject) curItem.get("discount");
-			if (curDiscount != null) {
-				Discount discount = new Discount();
-				discount.setPrice((Double) curDiscount.get("specialPrice"));
-				discount.setUnits((Long) curDiscount.get("qty"));
-				this.discountsCatalog.addDiscount(item, discount);
-			}
-
-		}
-
 	}
 
 	/**
@@ -170,12 +117,72 @@ public class Store {
 		stockItem.setQty(--currentQty);
 	}
 
+	/**
+	 * Checks if a given item has discount
+	 * 
+	 * @param item, item to be considered
+	 * @return true if item has discount, otherwise false
+	 */
 	public Boolean hasDiscount(Item item) {
 		return this.discountsCatalog.getDiscount(item) != null;
 	}
 
+	/**
+	 * Gets the discount of a given item
+	 * 
+	 * @param item, item to be considered
+	 * @return the item discount if it has one, other null
+	 */
 	public Discount getDiscount(Item item) {
 		return this.discountsCatalog.getDiscount(item);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void init(String stockFileName) throws FileNotFoundException, IOException, ParseException {
+
+		// fetch items list
+		stockItems = new HashMap<Long, StockItem>();
+
+		// initialize discounts catalog
+		discountsCatalog = new DiscountsCatalog();
+
+		JSONParser jsonParser = new JSONParser();
+		Object obj = jsonParser.parse(new FileReader(stockFileName));
+
+		JSONObject json = (JSONObject) obj;
+		JSONArray array = (JSONArray) json.get("stock");
+
+		Iterator<JSONObject> iterator = array.iterator();
+		while (iterator.hasNext()) {
+			JSONObject cur = iterator.next();
+
+			// stock quantity
+			Long stockQty = (Long) cur.get("qty");
+
+			// item
+			JSONObject curItem = (JSONObject) cur.get("item");
+			Item item = new Item();
+			item.setId((Long) curItem.get("id"));
+			item.setDesignation((String) curItem.get("designation"));
+			item.setPrice((Double) curItem.get("price"));
+
+			StockItem stockItem = new StockItem();
+			stockItem.setItem(item);
+			stockItem.setQty(stockQty);
+
+			stockItems.put(item.getId(), stockItem);
+
+			// item discount
+			JSONObject curDiscount = (JSONObject) curItem.get("discount");
+			if (curDiscount != null) {
+				Discount discount = new Discount();
+				discount.setPrice((Double) curDiscount.get("specialPrice"));
+				discount.setUnits((Long) curDiscount.get("qty"));
+				this.discountsCatalog.addDiscount(item, discount);
+			}
+
+		}
+
 	}
 
 }

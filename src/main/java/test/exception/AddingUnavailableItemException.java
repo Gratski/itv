@@ -6,6 +6,8 @@ package test.exception;
  */
 public class AddingUnavailableItemException extends RuntimeException{
 
+	private static final long serialVersionUID = -1347436813274727961L;
+
 	public AddingUnavailableItemException() {}
 	
 	public AddingUnavailableItemException(String msg) {
